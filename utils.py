@@ -760,6 +760,23 @@ class FIFOQueue(Queue):
             self.start = 0
         return e
 
+class MyQueue(Queue):
+
+    def __init__(self):
+        self.A = []
+
+    def append(self, item):
+        self.A.append(item)
+
+    def __len__(self):
+        return len(self.A)
+
+    def extend(self, items):
+        self.A.extend(items)
+        self.A.sort(key=lambda a:a.path_cost)
+
+    def pop(self):
+        return self.A.pop(0)
 
 class PriorityQueue(Queue):
     """A queue in which the minimum (or maximum) element (as determined by f and

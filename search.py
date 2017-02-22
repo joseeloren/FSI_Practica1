@@ -73,7 +73,7 @@ class Node:
             self.depth = parent.depth + 1
 
     def __repr__(self):
-        return "<Node %s>" % (self.state,)
+        return "<Node %s>" % (self.state)
 
     def path(self):
         """Create a list of nodes from the root to this node."""
@@ -115,6 +115,8 @@ def depth_first_tree_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
     return tree_search(problem, Stack())
 
+def branch_jump_search(problem):
+    return graph_search(problem,MyQueue())
 
 def graph_search(problem, fringe):
     """Search through the successors of a problem to find a goal.
