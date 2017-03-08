@@ -115,7 +115,8 @@ def depth_first_tree_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
     return tree_search(problem, Stack())
 
-def branch_jump_search(problem):
+def branch_bound_graph_search(problem):
+    print "Branch Bound Graph Search"
     return graph_search(problem,MyQueue())
 
 def graph_search(problem, fringe):
@@ -123,24 +124,30 @@ def graph_search(problem, fringe):
     The argument fringe should be an empty queue.
     If two paths reach a state, only use the best one. [Fig. 3.18]"""
     closed = {}
+    expand_count = 0;
     fringe.append(Node(problem.initial))
     while fringe:
         node = fringe.pop()
         if problem.goal_test(node.state):
+            print "Expanded Nodes = %d" % (expand_count)
             return node
         if node.state not in closed:
             closed[node.state] = True
             fringe.extend(node.expand(problem))
+            expand_count += 1
+    print "Expanded Nodes = %d" % (expand_count)
     return None
 
 
 def breadth_first_graph_search(problem):
     """Search the shallowest nodes in the search tree first. [p 74]"""
+    print "Breadth First Graph Search"
     return graph_search(problem, FIFOQueue())  # FIFOQueue -> fringe
 
 
 def depth_first_graph_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
+    print "Depth First Graph Search"
     return graph_search(problem, Stack())
 
 
