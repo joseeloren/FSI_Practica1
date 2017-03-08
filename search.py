@@ -73,7 +73,7 @@ class Node:
             self.depth = parent.depth + 1
 
     def __repr__(self):
-        return "<Node %s>" % (self.state)
+        return "<Node %s path_cost %s>" % (self.state, self.path_cost)
 
     def path(self):
         """Create a list of nodes from the root to this node."""
@@ -88,7 +88,6 @@ class Node:
         return [Node(next, self, act,
                      problem.path_cost(self.path_cost, self.state, act, next))
                 for (act, next) in problem.successor(self.state)]
-
 
 # ______________________________________________________________________________
 ## Uninformed Search algorithms
@@ -110,14 +109,18 @@ def breadth_first_tree_search(problem):
     """Search the shallowest nodes in the search tree first. [p 74]"""
     return tree_search(problem, FIFOQueue())
 
-
 def depth_first_tree_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
     return tree_search(problem, Stack())
 
 def branch_bound_graph_search(problem):
     print "Branch Bound Graph Search"
-    return graph_search(problem,MyQueue())
+    return graph_search_without_closed(problem,MyQueue())
+
+def branch_bound_subestimate_graph_search(problem):
+    print "Branch Bound Subestimate Graph Search"
+    return graph_search_without_closed_with_heuristic(problem,MyQueue2(problem))
+
 
 def graph_search(problem, fringe):
     """Search through the successors of a problem to find a goal.
@@ -137,6 +140,31 @@ def graph_search(problem, fringe):
             expand_count += 1
     print "Expanded Nodes = %d" % (expand_count)
     return None
+
+def graph_search_without_closed(problem, fringe):
+    expand_count = 0;
+    fringe.append(Node(problem.initial))
+    while fringe:
+        node = fringe.pop()
+        if problem.goal_test(node.state):
+            print "Expanded Nodes = %d" % (expand_count)
+            return node
+        fringe.extend(node.expand(problem))
+        expand_count += 1
+    print "Expanded Nodes = %d" % (expand_count)
+
+def graph_search_without_closed_with_heuristic(problem, fringe):
+    expand_count = 0;
+    fringe.append(Node(problem.initial))
+    while fringe:
+        node = fringe.pop()
+        if problem.goal_test(node.state):
+            print "Expanded Nodes = %d" % (expand_count)
+            return node
+        fringe.extend(node.expand(problem))
+        expand_count += 1
+    print "Expanded Nodes = %d" % (expand_count)
+
 
 
 def breadth_first_graph_search(problem):

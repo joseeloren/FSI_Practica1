@@ -778,6 +778,25 @@ class MyQueue(Queue):
     def pop(self):
         return self.A.pop(0)
 
+class MyQueue2(Queue):
+
+    def __init__(self,problem):
+        self.A = []
+        self.problem = problem
+
+    def append(self, item):
+        self.A.append(item)
+
+    def __len__(self):
+        return len(self.A)
+
+    def extend(self, items):
+        self.A.extend(items)
+        self.A.sort(key=lambda a:a.path_cost+a.getHeuristic(problem))
+
+    def pop(self):
+        return self.A.pop(0)
+
 class PriorityQueue(Queue):
     """A queue in which the minimum (or maximum) element (as determined by f and
     order) is returned first. If order is min, the item with minimum f(x) is
