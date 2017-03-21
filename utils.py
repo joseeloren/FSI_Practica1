@@ -746,6 +746,9 @@ class FIFOQueue(Queue):
     def append(self, item):
         self.A.append(item)
 
+    def __str__(self):
+        return str(self.A)[1:-1]
+
     def __len__(self):
         return len(self.A) - self.start
 
@@ -773,7 +776,7 @@ class MyQueue(Queue):
 
     def extend(self, items):
         self.A.extend(items)
-        self.A.sort(key=lambda a:a.path_cost)
+        self.A.sort(key=lambda node:node.path_cost)
 
     def pop(self):
         return self.A.pop(0)
@@ -792,7 +795,10 @@ class MyQueue2(Queue):
 
     def extend(self, items):
         self.A.extend(items)
-        self.A.sort(key=lambda a:a.path_cost+a.getHeuristic(problem))
+        self.A.sort(key=lambda node:node.path_cost+self.problem.h(node))
+        print "\nSe expande: " + str(items)
+        for item in items:
+           print "Path_cost: " + str(item) + " ; " + str(item.path_cost+self.problem.h(item))
 
     def pop(self):
         return self.A.pop(0)

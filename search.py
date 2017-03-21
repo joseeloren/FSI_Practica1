@@ -119,7 +119,7 @@ def branch_bound_graph_search(problem):
 
 def branch_bound_subestimate_graph_search(problem):
     print "Branch Bound Subestimate Graph Search"
-    return graph_search_without_closed_with_heuristic(problem,MyQueue2(problem))
+    return graph_search_without_closed(problem,MyQueue2(problem))
 
 
 def graph_search(problem, fringe):
@@ -127,45 +127,41 @@ def graph_search(problem, fringe):
     The argument fringe should be an empty queue.
     If two paths reach a state, only use the best one. [Fig. 3.18]"""
     closed = {}
-    expand_count = 0;
+    visited_count = 0
+    expanded_count = 0
     fringe.append(Node(problem.initial))
+
     while fringe:
         node = fringe.pop()
+        visited_count += 1
         if problem.goal_test(node.state):
-            print "Expanded Nodes = %d" % (expand_count)
+     #       print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
             return node
         if node.state not in closed:
             closed[node.state] = True
+            fringe_size_preextend = len(fringe)
             fringe.extend(node.expand(problem))
-            expand_count += 1
-    print "Expanded Nodes = %d" % (expand_count)
-    return None
+            expanded_count += len(fringe)-fringe_size_preextend
+    #print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+    return node
 
 def graph_search_without_closed(problem, fringe):
-    expand_count = 0;
+    visited_count = 0
+    expanded_count = 0
     fringe.append(Node(problem.initial))
+    path_queue = FIFOQueue()
     while fringe:
         node = fringe.pop()
+        path_queue.append(node)
+        visited_count += 1
         if problem.goal_test(node.state):
-            print "Expanded Nodes = %d" % (expand_count)
-            return node
+            print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+            return path_queue
+        fringe_size_preextend = len(fringe)
         fringe.extend(node.expand(problem))
-        expand_count += 1
-    print "Expanded Nodes = %d" % (expand_count)
-
-def graph_search_without_closed_with_heuristic(problem, fringe):
-    expand_count = 0;
-    fringe.append(Node(problem.initial))
-    while fringe:
-        node = fringe.pop()
-        if problem.goal_test(node.state):
-            print "Expanded Nodes = %d" % (expand_count)
-            return node
-        fringe.extend(node.expand(problem))
-        expand_count += 1
-    print "Expanded Nodes = %d" % (expand_count)
-
-
+        expanded_count += len(fringe) - fringe_size_preextend
+    print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+    return path_queue
 
 def breadth_first_graph_search(problem):
     """Search the shallowest nodes in the search tree first. [p 74]"""
