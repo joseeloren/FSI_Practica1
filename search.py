@@ -105,24 +105,24 @@ def tree_search(problem, fringe):
     return None
 
 
-def breadth_first_tree_search(problem):
+def breadth_first_tree_search(problem,mat,n):
     """Search the shallowest nodes in the search tree first. [p 74]"""
-    return tree_search(problem, FIFOQueue())
+    return tree_search(problem, FIFOQueue(),mat,n)
 
-def depth_first_tree_search(problem):
+def depth_first_tree_search(problem,mat):
     """Search the deepest nodes in the search tree first. [p 74]"""
-    return tree_search(problem, Stack())
+    return tree_search(problem, Stack(),mat)
 
-def branch_bound_graph_search(problem):
+def branch_bound_graph_search(problem,mat,n):
     print "Branch Bound Graph Search"
-    return graph_search_without_closed(problem,MyQueue())
+    return graph_search_without_closed(problem,MyQueue(),mat,n)
 
-def branch_bound_subestimate_graph_search(problem):
+def branch_bound_subestimate_graph_search(problem,mat,n):
     print "Branch Bound Subestimate Graph Search"
-    return graph_search_without_closed(problem,MyQueue2(problem))
+    return graph_search_without_closed(problem,MyQueue2(problem),mat,n)
 
 
-def graph_search(problem, fringe):
+def graph_search(problem, fringe,mat,n):
     """Search through the successors of a problem to find a goal.
     The argument fringe should be an empty queue.
     If two paths reach a state, only use the best one. [Fig. 3.18]"""
@@ -135,17 +135,21 @@ def graph_search(problem, fringe):
         node = fringe.pop()
         visited_count += 1
         if problem.goal_test(node.state):
-     #       print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+            print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+            mat[n][0] = visited_count
+            mat[n][1] = expanded_count
             return node
         if node.state not in closed:
             closed[node.state] = True
             fringe_size_preextend = len(fringe)
             fringe.extend(node.expand(problem))
             expanded_count += len(fringe)-fringe_size_preextend
-    #print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+    print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+    mat[n][0] = visited_count
+    mat[n][1] = expanded_count
     return node
 
-def graph_search_without_closed(problem, fringe):
+def graph_search_without_closed(problem, fringe,mat,n):
     visited_count = 0
     expanded_count = 0
     fringe.append(Node(problem.initial))
@@ -156,23 +160,27 @@ def graph_search_without_closed(problem, fringe):
         visited_count += 1
         if problem.goal_test(node.state):
             print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+            mat[n][0] = visited_count
+            mat[n][1] = expanded_count
             return path_queue
         fringe_size_preextend = len(fringe)
         fringe.extend(node.expand(problem))
         expanded_count += len(fringe) - fringe_size_preextend
     print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
+    mat[n][0] = visited_count
+    mat[n][1] = expanded_count
     return path_queue
 
-def breadth_first_graph_search(problem):
+def breadth_first_graph_search(problem,mat,n):
     """Search the shallowest nodes in the search tree first. [p 74]"""
     print "Breadth First Graph Search"
-    return graph_search(problem, FIFOQueue())  # FIFOQueue -> fringe
+    return graph_search(problem, FIFOQueue(),mat,n)  # FIFOQueue -> fringe
 
 
-def depth_first_graph_search(problem):
+def depth_first_graph_search(problem,mat,n):
     """Search the deepest nodes in the search tree first. [p 74]"""
     print "Depth First Graph Search"
-    return graph_search(problem, Stack())
+    return graph_search(problem, Stack(),mat,n)
 
 
 def depth_limited_search(problem, limit=50):
