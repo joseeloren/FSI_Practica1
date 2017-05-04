@@ -114,11 +114,11 @@ def depth_first_tree_search(problem,mat):
     return tree_search(problem, Stack(),mat)
 
 def branch_bound_graph_search(problem,mat,n):
-    print "Branch Bound Graph Search"
+    print "ram y acot"
     return graph_search_without_closed(problem,MyQueue(),mat,n)
 
 def branch_bound_subestimate_graph_search(problem,mat,n):
-    print "Branch Bound Subestimate Graph Search"
+    print "ram y acot sub"
     return graph_search_without_closed(problem,MyQueue2(problem),mat,n)
 
 
@@ -141,9 +141,8 @@ def graph_search(problem, fringe,mat,n):
             return node
         if node.state not in closed:
             closed[node.state] = True
-            fringe_size_preextend = len(fringe)
             fringe.extend(node.expand(problem))
-            expanded_count += len(fringe)-fringe_size_preextend
+            expanded_count += 1
     print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
     mat[n][0] = visited_count
     mat[n][1] = expanded_count
@@ -163,9 +162,8 @@ def graph_search_without_closed(problem, fringe,mat,n):
             mat[n][0] = visited_count
             mat[n][1] = expanded_count
             return path_queue
-        fringe_size_preextend = len(fringe)
         fringe.extend(node.expand(problem))
-        expanded_count += len(fringe) - fringe_size_preextend
+        expanded_count += 1
     print "Visited Nodes = %d, Expanded Nodes = %d" % (visited_count, expanded_count)
     mat[n][0] = visited_count
     mat[n][1] = expanded_count
@@ -173,13 +171,13 @@ def graph_search_without_closed(problem, fringe,mat,n):
 
 def breadth_first_graph_search(problem,mat,n):
     """Search the shallowest nodes in the search tree first. [p 74]"""
-    print "Breadth First Graph Search"
+    print "anchura"
     return graph_search(problem, FIFOQueue(),mat,n)  # FIFOQueue -> fringe
 
 
 def depth_first_graph_search(problem,mat,n):
     """Search the deepest nodes in the search tree first. [p 74]"""
-    print "Depth First Graph Search"
+    print "profundidad"
     return graph_search(problem, Stack(),mat,n)
 
 

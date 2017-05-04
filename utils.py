@@ -796,9 +796,9 @@ class MyQueue2(Queue):
     def extend(self, items):
         self.A.extend(items)
         self.A.sort(key=lambda node:node.path_cost+self.problem.h(node))
-        print "\nSe expande: " + str(items)
-        for item in items:
-           print "Path_cost: " + str(item) + " ; " + str(item.path_cost+self.problem.h(item))
+        #print "\nSe expande: " + str(items)
+        #for item in items:
+         #  print "Path_cost: " + str(item) + " ; " + str(item.path_cost+self.problem.h(item))
 
     def pop(self):
         return self.A.pop(0)
